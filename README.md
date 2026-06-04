@@ -84,7 +84,4 @@ If you are interested in collaborating, hiring, or just want to connect:
 📄 License
 This project is proprietary and created for Johnny Fenelon.
 The design and code are copyrighted © 2025 Johnny Fenelon. All rights reserved.
-<p align="center">
-<strong>Built with 💛 and ☕ by Johnny Fenelon</strong><br>
-<em>Finance · Tech · BPO · AI</em>
-</p>
+
