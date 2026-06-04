@@ -37,14 +37,15 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 // Database connection (XAMPP local settings)
 try {
     $pdo = new PDO(
-        "mysql:host=localhost:3307;dbname=johnscos_portfolio1;charset=utf8mb4",
-        "root",
-        "",
+        "mysql:host=localhost;dbname=johnscos_portfolio1;charset=utf8mb4",
+        "johnscos_portfolio1",           // Your cPanel database username
+        "Welcome#1-*",      // Your database password
         [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]
     );
+    
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'msg' => 'Database connection failed']);
     exit;

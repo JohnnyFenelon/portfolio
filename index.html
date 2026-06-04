@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Johnny Fenelon | Finance · Tech · BPO · AI</title>
+<meta name="description" content="Johnny Fenelon — Finance Director, BPO Operations Expert, Python/React/PHP Developer, and AI specialist. Trilingual: Spanish, English, French.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLB(event)">
+  <button class="lb-close" onclick="closeLB()">×</button>
+  <img class="lb-img" id="lb-img" src="" alt="">
+</div>
+
+<!-- CONTACT MODAL -->
+<div id="contact-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#16162a;padding:2rem;border-radius:12px;max-width:500px;width:90%;position:relative;border:1px solid #2a2a3e;">
+    <button onclick="closeContactForm()" style="position:absolute;top:10px;right:15px;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+    <h2 style="margin-bottom:1rem;color:#6c63ff;">Contacto</h2>
+    <form id="contact-form" onsubmit="handleContactSubmit(event)">
+      <input type="text" id="contact-name" name="name" placeholder="Tu nombre" required style="width:100%;padding:12px;margin-bottom:1rem;background:#0a0a0f;border:1px solid #2a2a3e;color:#fff;border-radius:8px;box-sizing:border-box;">
+      <input type="email" id="contact-email" name="email" placeholder="Tu correo" required style="width:100%;padding:12px;margin-bottom:1rem;background:#0a0a0f;border:1px solid #2a2a3e;color:#fff;border-radius:8px;box-sizing:border-box;">
+      <textarea id="contact-message" name="message" placeholder="Tu mensaje" rows="5" required style="width:100%;padding:12px;margin-bottom:1rem;background:#0a0a0f;border:1px solid #2a2a3e;color:#fff;border-radius:8px;resize:vertical;box-sizing:border-box;"></textarea>
+      <button type="submit" id="submit-btn" style="background:linear-gradient(135deg,#6c63ff,#00d4aa);color:#fff;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;width:100%;">Enviar Mensaje</button>
+    </form>
+    <div id="contact-success" style="display:none;margin-top:1rem;padding:1rem;background:rgba(0,212,170,0.1);border:1px solid #00d4aa;border-radius:8px;color:#00d4aa;text-align:center;">✅ ¡Mensaje enviado con éxito!</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">JOHNNY<span>FENELON</span></a>
+    <div class="nav-links">
+      <a href="about.html" class="js-t" data-key="nav_about">Sobre mí</a>
+      <a href="#services" class="js-t" data-key="nav_services">Servicios</a>
+      <a href="#multimedia" class="js-t" data-key="nav_media">Media</a>
+      <a href="contact.html" class="js-t" data-key="nav_contact">Contacto</a>
+      <a href="index.html#subscribe" class="btn-nav-cta">Suscribirme</a>
+      <div class="nav-lang">
+        <button class="lang-btn active" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('fr')">FR</button>
+      </div>
+      <a class="btn-nav-cta js-t" data-key="nav_cta" href="contact.html">Contratar</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="hero">
+  <div class="hero-grid">
+    <!-- TEXT -->
+    <div class="hero-text fade-in">
+      <div class="eyebrow js-t" data-key="hero_eyebrow">Finance · Tech · Operations</div>
+      <h1>
+        <span class="name">JOHNNY</span>
+        <span class="role js-t" data-key="hero_role">FENELON</span>
+      </h1>
+      <p class="js-t" data-key="hero_desc">Finance Director, BPO Operations Leader, and Full-Stack Developer. Trilingual specialist transforming data into decisions and code into solutions.</p>
+      <div class="hero-pills">
+        <span class="pill">Python</span>
+        <span class="pill">React</span>
+        <span class="pill">PHP</span>
+        <span class="pill">PostgreSQL</span>
+        <span class="pill">Supabase</span>
+        <span class="pill js-t" data-key="pill_finance">Dirección Financiera</span>
+        <span class="pill">BPO / Call Center</span>
+        <span class="pill">Machine Learning</span>
+      </div>
+      <div class="hero-btns">
+        <a href="#services" class="btn-gold js-t" data-key="hero_cta1">Ver Servicios</a>
+        <button type="button" class="btn-ghost js-t" data-key="hero_cta2" onclick="showContactForm()">Contactar</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label js-t" data-key="stat_years">Años Exp.</div></div>
+        <div class="stat-item"><div class="stat-num">3</div><div class="stat-label js-t" data-key="stat_langs">Idiomas</div></div>
+        <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label js-t" data-key="stat_projects">Proyectos</div></div>
+      </div>
+    </div>
+    <!-- PHOTO -->
+    <div class="hero-photo-wrap fade-in" style="transition-delay:.2s">
+      <div class="hero-photo-ring"></div>
+      <div class="hero-photo-inner">
+        <img src="PROFILE_1.png" alt="Johnny Fenelon">
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint js-t" data-key="scroll_hint">scroll</div>
+</section>
+<div class="divider"></div>
+
+<!-- AD SLOT TOP -->
+<div class="container" style="padding:1rem 2rem;z-index:1;position:relative;">
+  <div class="ad-slot">[ Google AdSense — Leaderboard 728×90 ]</div>
+</div>
+
+<!-- ═══════════════════ LEARNING SPACE ═══════════════════ -->
+<section id="learning">
+  <div class="container">
+    <div class="section-label js-t" data-key="learning_label">📚 Espacio de Aprendizaje</div>
+    <h2 class="sec-title js-t" data-key="learning_title">Cursos & Recursos de Capacitación</h2>
+    <p class="sec-sub js-t" data-key="learning_sub">Aprende directamente de un experto en Python, IA, desarrollo web y operaciones.</p>
+    <div class="learning-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2rem;">
+      
+      <!-- COURSE 1: AI VIVE CODING -->
+      <div class="learning-card fade-in" style="background:linear-gradient(135deg,rgba(108,99,255,0.1),rgba(0,229,192,0.05));border:1px solid rgba(108,99,255,0.3);border-radius:12px;padding:1.5rem;transition:all .3s ease;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🤖</div>
+        <h3 class="js-t" data-key="course_ai" style="color:#6c63ff;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700;">AI Vive Coding Classes</h3>
+        <p class="js-t" data-key="course_ai_desc" style="color:var(--text2);font-size:0.95rem;margin-bottom:1.2rem;">Masterclass de automatización y IA aplicada al desarrollo real.</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_ai_l1" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 AI Automation Level 1</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_ai_l2" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 AI Automation Level 2</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_ai_l3" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 AI Automation Level 3</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_ai_l4" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 AI Automation Level 4</a>
+        </div>
+        <a href="https://aifenel.site" target="_blank" style="display:block;background:linear-gradient(135deg,#6c63ff,#00d4aa);color:#fff;border:none;padding:0.8rem 1.2rem;border-radius:8px;cursor:pointer;font-weight:700;width:100%;font-size:0.9rem;text-align:center;text-decoration:none;" class="js-t" data-key="btn_more">Ver Más →</a>
+      </div>
+
+      <!-- COURSE 2: PYTHON BASICS -->
+      <div class="learning-card fade-in" style="background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(0,229,192,0.05));border:1px solid rgba(201,168,76,0.3);border-radius:12px;padding:1.5rem;transition:all .3s ease;" >
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🐍</div>
+        <h3 class="js-t" data-key="course_py" style="color:#c9a84c;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700;">Python Basics</h3>
+        <p class="js-t" data-key="course_py_desc" style="color:var(--text2);font-size:0.95rem;margin-bottom:1.2rem;">Fundamentos de Python para principiantes.</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_py_l1" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 Nivel 1: Variables & Tipos</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_py_l2" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 Nivel 2: Control de Flujo</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_py_l3" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 Nivel 3: Funciones & Módulos</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_py_l4" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 Nivel 4: Programación OOP</a>
+        </div>
+        <a href="https://aifenel.site" target="_blank" style="display:block;background:linear-gradient(135deg,#c9a84c,#d4a574);color:#fff;border:none;padding:0.8rem 1.2rem;border-radius:8px;cursor:pointer;font-weight:700;width:100%;font-size:0.9rem;text-align:center;text-decoration:none;" class="js-t" data-key="btn_more">Ver Más →</a>
+      </div>
+
+      <!-- COURSE 3: API INTEGRATION -->
+      <div class="learning-card fade-in" style="background:linear-gradient(135deg,rgba(0,229,192,0.1),rgba(108,99,255,0.05));border:1px solid rgba(0,229,192,0.3);border-radius:12px;padding:1.5rem;transition:all .3s ease;" >
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🔌</div>
+        <h3 class="js-t" data-key="course_api" style="color:#00d4aa;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700;">API Integration</h3>
+        <p class="js-t" data-key="course_api_desc" style="color:var(--text2);font-size:0.95rem;margin-bottom:1.2rem;">Integra APIs profesionales en tus proyectos.</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_api_l1" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 OpenAI & ChatGPT</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_api_l2" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 Google Cloud APIs</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_api_l3" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 REST APIs & Auth</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_api_l4" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 Webhooks Avanzados</a>
+        </div>
+        <a href="https://aifenel.site" target="_blank" style="display:block;background:linear-gradient(135deg,#00d4aa,#00e5c0);color:#fff;border:none;padding:0.8rem 1.2rem;border-radius:8px;cursor:pointer;font-weight:700;width:100%;font-size:0.9rem;text-align:center;text-decoration:none;" class="js-t" data-key="btn_more">Ver Más →</a>
+      </div>
+
+      <!-- COURSE 4: WEB DEPLOYMENT -->
+      <div class="learning-card fade-in" style="background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(108,99,255,0.05));border:1px solid rgba(201,168,76,0.3);border-radius:12px;padding:1.5rem;transition:all .3s ease;" >
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🚀</div>
+        <h3 class="js-t" data-key="course_deploy" style="color:#c9a84c;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700;">Web Deployment</h3>
+        <p class="js-t" data-key="course_deploy_desc" style="color:var(--text2);font-size:0.95rem;margin-bottom:1.2rem;">Publica tu sitio web profesionalmente.</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_deploy_l1" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 cPanel & Shared Hosting</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_deploy_l2" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 Domain & DNS</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_deploy_l3" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 SSL & Seguridad</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_deploy_l4" style="color:#c9a84c;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.2);display:block;">📌 CI/CD Pipelines</a>
+        </div>
+        <a href="https://aifenel.site" target="_blank" style="display:block;background:linear-gradient(135deg,#c9a84c,#d4a574);color:#fff;border:none;padding:0.8rem 1.2rem;border-radius:8px;cursor:pointer;font-weight:700;width:100%;font-size:0.9rem;text-align:center;text-decoration:none;" class="js-t" data-key="btn_more">Ver Más →</a>
+      </div>
+
+      <!-- COURSE 5: ENGLISH 101 -->
+      <div class="learning-card fade-in" style="background:linear-gradient(135deg,rgba(0,229,192,0.1),rgba(201,168,76,0.05));border:1px solid rgba(0,229,192,0.3);border-radius:12px;padding:1.5rem;transition:all .3s ease;" >
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🇺🇸</div>
+        <h3 class="js-t" data-key="course_english" style="color:#00d4aa;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700;">English 101</h3>
+        <p class="js-t" data-key="course_english_desc" style="color:var(--text2);font-size:0.95rem;margin-bottom:1.2rem;">Inglés profesional para desarrolladores.</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_english_l1" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 Vocabulario Técnico</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_english_l2" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 Presentaciones Profesionales</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_english_l3" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 Entrevistas de Trabajo</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_english_l4" style="color:#00d4aa;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,212,170,0.2);display:block;">📌 Escritura Técnica</a>
+        </div>
+        <a href="https://aifenel.site" target="_blank" style="display:block;background:linear-gradient(135deg,#00d4aa,#00e5c0);color:#fff;border:none;padding:0.8rem 1.2rem;border-radius:8px;cursor:pointer;font-weight:700;width:100%;font-size:0.9rem;text-align:center;text-decoration:none;" class="js-t" data-key="btn_more">Ver Más →</a>
+      </div>
+
+      <!-- COURSE 6: AGENT INTEGRATION -->
+      <div class="learning-card fade-in" style="background:linear-gradient(135deg,rgba(130,80,255,0.15),rgba(0,229,192,0.05));border:1px solid rgba(130,80,255,0.3);border-radius:12px;padding:1.5rem;transition:all .3s ease;" >
+        <div style="font-size:2.5rem;margin-bottom:1rem;">⚙️</div>
+        <h3 class="js-t" data-key="course_agent" style="color:#8250ff;font-size:1.3rem;margin-bottom:0.5rem;font-weight:700;">Agent Integration</h3>
+        <p class="js-t" data-key="course_agent_desc" style="color:var(--text2);font-size:0.95rem;margin-bottom:1.2rem;">Integra agentes de IA en tus páginas web.</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;">
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_agent_l1" style="color:#8250ff;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(130,80,255,0.2);display:block;">📌 AI Chatbots</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_agent_l2" style="color:#8250ff;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(130,80,255,0.2);display:block;">📌 LangChain & Agents</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_agent_l3" style="color:#8250ff;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(130,80,255,0.2);display:block;">📌 Automatización Avanzada</a>
+          <a href="https://johnnyfenelon.com" target="_blank" class="js-t" data-key="course_agent_l4" style="color:#8250ff;text-decoration:none;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid rgba(130,80,255,0.2);display:block;">📌 Multi-Agent Systems</a>
+        </div>
+        <a href="https://aifenel.site" target="_blank" style="display:block;background:linear-gradient(135deg,#8250ff,#a070ff);color:#fff;border:none;padding:0.8rem 1.2rem;border-radius:8px;cursor:pointer;font-weight:700;width:100%;font-size:0.9rem;text-align:center;text-decoration:none;" class="js-t" data-key="btn_more">Ver Más →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════ TECH STACK ═══════════════════ -->
+<section id="stack">
+  <div class="container">
+    <div class="section-label js-t" data-key="stack_label">Stack Tecnológico</div>
+    <h2 class="sec-title js-t" data-key="stack_title">Herramientas & Lenguajes</h2>
+
+    <div style="margin-bottom:1.5rem" class="fade-in">
+      <div class="stack-cat js-t" data-key="scat_dev">Desarrollo</div>
+      <div class="stack-row">
+        <div class="stack-item"><span class="dot dot-gold"></span>Python</div>
+        <div class="stack-item"><span class="dot dot-teal"></span>React</div>
+        <div class="stack-item"><span class="dot dot-blue"></span>PHP</div>
+        <div class="stack-item"><span class="dot dot-green"></span>PostgreSQL</div>
+        <div class="stack-item"><span class="dot dot-teal"></span>Supabase</div>
+        <div class="stack-item"><span class="dot dot-gold"></span>Node.js</div>
+        <div class="stack-item"><span class="dot dot-blue"></span>REST APIs</div>
+        <div class="stack-item"><span class="dot dot-green"></span>Git</div>
+      </div>
+
+      <div class="stack-cat js-t" data-key="scat_ai">IA & Data</div>
+      <div class="stack-row">
+        <div class="stack-item"><span class="dot dot-gold"></span>Machine Learning</div>
+        <div class="stack-item"><span class="dot dot-teal"></span>Pandas / NumPy</div>
+        <div class="stack-item"><span class="dot dot-blue"></span>TensorFlow</div>
+        <div class="stack-item"><span class="dot dot-green"></span>OpenAI API</div>
+        <div class="stack-item"><span class="dot dot-gold"></span>LangChain</div>
+      </div>
+
+      <div class="stack-cat js-t" data-key="scat_biz">Negocio & Finanzas</div>
+      <div class="stack-row">
+        <div class="stack-item"><span class="dot dot-gold"></span>Excel / Power BI</div>
+        <div class="stack-item"><span class="dot dot-teal"></span>SAP Basics</div>
+        <div class="stack-item"><span class="dot dot-blue"></span>Six Sigma</div>
+        <div class="stack-item"><span class="dot dot-green"></span>Lean BPO</div>
+        <div class="stack-item"><span class="dot dot-red"></span>CRM Systems</div>
+      </div>
+    </div>
+
+    <div class="skill-bars fade-in">
+      <div class="skill-bar">
+        <div class="skill-bar-top"><span class="sk-name">Python</span><span class="sk-pct">92%</span></div>
+        <div class="sk-track"><div class="sk-fill" style="width:92%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-bar-top"><span class="sk-name">Financial Direction</span><span class="sk-pct">95%</span></div>
+        <div class="sk-track"><div class="sk-fill" style="width:95%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-bar-top"><span class="sk-name">React / JS</span><span class="sk-pct">85%</span></div>
+        <div class="sk-track"><div class="sk-fill" style="width:85%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-bar-top"><span class="sk-name">BPO Operations</span><span class="sk-pct">97%</span></div>
+        <div class="sk-track"><div class="sk-fill" style="width:97%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-bar-top"><span class="sk-name">PostgreSQL / Supabase</span><span class="sk-pct">88%</span></div>
+        <div class="sk-track"><div class="sk-fill" style="width:88%"></div></div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-bar-top"><span class="sk-name">Machine Learning</span><span class="sk-pct">80%</span></div>
+        <div class="sk-track"><div class="sk-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════ SERVICES ═══════════════════ -->
+<section id="services">
+  <div class="container">
+    <div class="section-label js-t" data-key="srv_label">Servicios</div>
+    <h2 class="sec-title js-t" data-key="srv_title">Lo que puedo hacer por ti</h2>
+    <p class="sec-sub js-t" data-key="srv_sub">Soluciones de alto impacto en finanzas, tecnología y operaciones.</p>
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <div class="service-glow sg-gold"></div>
+        <div class="service-num">01</div>
+        <h3 class="js-t" data-key="s1_h">Consultoría Financiera</h3>
+        <p class="js-t" data-key="s1_p">Modelado financiero, análisis de rentabilidad, planificación estratégica y reportes ejecutivos para toma de decisiones de alto nivel.</p>
+        <div class="service-tags"><span class="stag">Budgeting</span><span class="stag">Forecasting</span><span class="stag">Risk</span><span class="stag">KPIs</span></div>
+      </div>
+      <div class="service-card fade-in" style="transition-delay:.1s">
+        <div class="service-glow sg-teal"></div>
+        <div class="service-num">02</div>
+        <h3 class="js-t" data-key="s2_h">Operaciones BPO / Call Center</h3>
+        <p class="js-t" data-key="s2_p">Diseño, optimización y gestión de operaciones de servicio al cliente, back-office y centros de contacto multicanal.</p>
+        <div class="service-tags"><span class="stag">SLA/KPI</span><span class="stag">WFM</span><span class="stag">QA</span><span class="stag">Escalabilidad</span></div>
+      </div>
+      <div class="service-card fade-in" style="transition-delay:.2s">
+        <div class="service-glow sg-gold"></div>
+        <div class="service-num">03</div>
+        <h3 class="js-t" data-key="s3_h">Desarrollo Full-Stack</h3>
+        <p class="js-t" data-key="s3_p">Aplicaciones web con React + PHP + PostgreSQL y backend potenciado por Supabase. Desde MVPs hasta sistemas empresariales.</p>
+        <div class="service-tags"><span class="stag">React</span><span class="stag">PHP</span><span class="stag">Supabase</span><span class="stag">REST</span></div>
+      </div>
+      <div class="service-card fade-in" style="transition-delay:.3s">
+        <div class="service-glow sg-teal"></div>
+        <div class="service-num">04</div>
+        <h3 class="js-t" data-key="s4_h">Python & Automatización IA</h3>
+        <p class="js-t" data-key="s4_p">Scripts de automatización, bots inteligentes, modelos ML, análisis de datos y pipelines de inteligencia artificial para tu empresa.</p>
+        <div class="service-tags"><span class="stag">ML</span><span class="stag">Pandas</span><span class="stag">OpenAI</span><span class="stag">Bots</span></div>
+      </div>
+      <div class="service-card fade-in" style="transition-delay:.4s">
+        <div class="service-glow sg-gold"></div>
+        <div class="service-num">05</div>
+        <h3 class="js-t" data-key="s5_h">Academia & Capacitación</h3>
+        <p class="js-t" data-key="s5_p">Formación en Python, IA y tecnología financiera para equipos y profesionales. Contenido disponible en español, inglés y francés.</p>
+        <div class="service-tags"><span class="stag">Español</span><span class="stag">English</span><span class="stag">Français</span><span class="stag">Online</span></div>
+      </div>
+      <div class="service-card fade-in" style="transition-delay:.5s">
+        <div class="service-glow sg-teal"></div>
+        <div class="service-num">06</div>
+        <h3 class="js-t" data-key="s6_h">Creación de Contenido Tech</h3>
+        <p class="js-t" data-key="s6_p">Videos, podcasts y materiales educativos sobre programación, IA, finanzas y productividad. Producción multimedia profesional.</p>
+        <div class="service-tags"><span class="stag">YouTube</span><span class="stag">Podcast</span><span class="stag">Video Ed.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- AD SLOT MID -->
+<div class="container" style="padding:1rem 2rem;z-index:1;position:relative;">
+  <div class="ad-slot">[ Google AdSense — Rectangle 336×280 ]</div>
+</div>
+
+<!-- ═══════════════════ MULTIMEDIA ═══════════════════ -->
+<section id="multimedia">
+  <div class="container">
+    <div class="section-label js-t" data-key="media_label">Multimedia</div>
+    <h2 class="sec-title js-t" data-key="media_title">Fotos & Videos</h2>
+    <p class="sec-sub js-t" data-key="media_sub">Detrás del código y los números, hay historias que contar.</p>
+
+    <div class="media-tabs">
+      <button class="media-tab active js-t" data-key="tab_photos" onclick="switchTab('photos',this)">📸 Fotos</button>
+      <button class="media-tab js-t" data-key="tab_videos" onclick="switchTab('videos',this)">🎬 Videos</button>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="media-pane active" id="pane-photos">
+      <div class="photos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;">
+        <!-- Main profile photo -->
+        <div class="photo-card" onclick="openLB('PROFILE_1.png')">
+          <img src="PROFILE_1.png" alt="Johnny Fenelon — Profile">
+          <div class="photo-overlay"><span class="photo-label">Profile Shot</span></div>
+        </div>
+        <!-- Placeholder cards for demo -->
+        <div class="photo-card" style="background:linear-gradient(135deg,#1a1a28,#0d0d14);display:flex;align-items:center;justify-content:center;cursor:default;">
+          <div style="text-align:center;color:var(--text3);">
+            <div style="font-size:2rem;margin-bottom:.5rem;">📷</div>
+            <div style="font-size:.72rem;font-family:var(--ff-mono);">Coming soon</div>
+          </div>
+        </div>
+        <div class="photo-card" style="background:linear-gradient(135deg,#0d1a1a,#0d0d14);display:flex;align-items:center;justify-content:center;cursor:default;">
+          <div style="text-align:center;color:var(--text3);">
+            <div style="font-size:2rem;margin-bottom:.5rem;">📷</div>
+            <div style="font-size:.72rem;font-family:var(--ff-mono);">Coming soon</div>
+          </div>
+        </div>
+        <div class="photo-card" style="background:linear-gradient(135deg,#1a100d,#0d0d14);display:flex;align-items:center;justify-content:center;cursor:default;">
+          <div style="text-align:center;color:var(--text3);">
+            <div style="font-size:2rem;margin-bottom:.5rem;">📷</div>
+            <div style="font-size:.72rem;font-family:var(--ff-mono);">Coming soon</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEOS -->
+    <div class="media-pane" id="pane-videos">
+      <div class="videos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;">
+        <div class="video-card">
+          <div class="video-thumb">
+            <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="vbadge">Python</span>
+          </div>
+          <div class="video-info">
+            <h4 class="js-t" data-key="v1_h">Python para Finanzas – Ep.1</h4>
+            <p class="js-t" data-key="v1_p">Automatiza reportes financieros con Python y Pandas.</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-thumb" style="background:linear-gradient(135deg,rgba(0,229,192,.1),var(--card));">
+            <div class="play-circle" style="background:rgba(0,229,192,.8);"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="vbadge">🔴 Live</span>
+          </div>
+          <div class="video-info">
+            <h4 class="js-t" data-key="v2_h">BPO Operations – Masterclass</h4>
+            <p class="js-t" data-key="v2_p">KPIs, WFM y diseño de centros de contacto escalables.</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-thumb" style="background:linear-gradient(135deg,rgba(201,168,76,.1),var(--card));">
+            <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="vbadge">React</span>
+          </div>
+          <div class="video-info">
+            <h4 class="js-t" data-key="v3_h">Dashboard con React + Supabase</h4>
+            <p class="js-t" data-key="v3_p">Construye un panel financiero en tiempo real.</p>
+          </div>
+        </div>
+        <div class="video-card">
+          <div class="video-thumb" style="background:linear-gradient(135deg,rgba(90,50,200,.15),var(--card));">
+            <div class="play-circle" style="background:rgba(130,80,255,.8);"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="vbadge">🎙 Podcast</span>
+          </div>
+          <div class="video-info">
+            <h4 class="js-t" data-key="v4_h">El Futuro del Trabajo – Podcast</h4>
+            <p class="js-t" data-key="v4_p">IA, automatización y el rol humano en el nuevo empleo.</p>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:2rem;">
+        <a href="https://www.youtube.com/channel/UCW5-uySFB6vRpSN8ekQRpVA" target="_blank" class="btn-gold js-t" data-key="yt_all">Ver canal en YouTube →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════ HIGHLIGHT ═══════════════════ -->
+<section id="highlight">
+  <div class="hl-inner fade-in">
+    <div class="hl-quote js-t" data-key="hl_quote">"The <em>rarest asset</em> in business is someone who can code, lead, and communicate across cultures."</div>
+    <div class="hl-langs">
+      <div class="lang-badge"><span class="flag">🇪🇸</span>Español Nativo</div>
+      <div class="lang-badge"><span class="flag">🇺🇸</span>English Fluent</div>
+      <div class="lang-badge"><span class="flag">🇫🇷</span>Français Courant</div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══════════════════ SUBSCRIBE ═══════════════════ -->
+<section id="subscribe">
+  <div class="container">
+    <div class="section-label js-t" data-key="sub_label">Newsletter & Contacto</div>
+    <h2 class="sec-title js-t" data-key="sub_title">🎓 Únete a la Academia</h2>
+    <p class="sec-sub js-t" data-key="sub_desc">Suscríbete y recibe recursos exclusivos sobre Python, Finanzas e IA. O crea una cuenta para acceso completo.</p>
+    <div class="subscribe-box fade-in" style="display:grid;gap:1rem;max-width:700px;margin:0 auto;">
+      <form id="form-sub" onsubmit="event.preventDefault(); handleSubscribe();" style="display:grid;gap:1rem;">
+        <input type="text" id="sub-name" placeholder="Tu nombre completo" class="form-input js-t-ph" data-key="ph_name" required>
+        <input type="email" id="sub-email" placeholder="Tu correo electrónico" class="form-input js-t-ph" data-key="ph_email" required>
+        <button type="submit" class="btn-gold js-t" data-key="btn_sub">🚀 Suscribirme Ahora</button>
+      </form>
+      <div id="sub-success" style="display:none;padding:1rem;background:rgba(0,212,170,0.1);border:1px solid #00d4aa;border-radius:8px;color:#00d4aa;text-align:center;">✅<span id="success-msg-text">¡Listo! Pronto recibirás noticias.</span></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+
+<!-- ═══════════════════ SOCIAL ═══════════════════ -->
+<section id="social">
+  <div class="container">
+    <div class="section-label" style="justify-content:center;margin-bottom:.5rem;" ><span class="js-t" data-key="social_label">Redes</span></div>
+    <h2 class="sec-title" style="text-align:center;" ><span class="js-t" data-key="social_title">Sígueme</span></h2>
+    <div class="social-row">
+      <a class="soc-btn yt" href="https://www.youtube.com/channel/UCW5-uySFB6vRpSN8ekQRpVA" target="_blank">
+        <svg class="soc-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6a3 3 0 00-2.1 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1C4.5 20.5 12 20.5 12 20.5s7.5 0 9.4-.6a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
+        YouTube
+      </a>
+      <a class="soc-btn ig" href="https://www.instagram.com/john.fenelon/" target="_blank">
+        <svg class="soc-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.2.1 4.7 1.7 4.8 4.8.1 1.2.1 1.6.1 4.9s0 3.6-.1 4.8c-.1 3.1-1.6 4.7-4.8 4.8-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.2-.1-4.7-1.7-4.8-4.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 4 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.9.3.3 2.9.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.2 2.8 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.2-.2 6.8-2.8 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9C23.7 2.9 21.1.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8z"/></svg>
+        Instagram
+      </a>
+      <a class="soc-btn fb" href="https://www.facebook.com/john.fenel/" target="_blank">
+        <svg class="soc-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18.1 4.4 23 10.1 24v-8.4H7.1v-3.5h3V9.4c0-3 1.8-4.6 4.5-4.6 1.3 0 2.7.2 2.7.2v2.9h-1.5c-1.5 0-1.9.9-1.9 1.8v2.2h3.3l-.5 3.5H14v8.4C19.6 23 24 18.1 24 12.1z"/></svg>
+        Facebook
+      </a>
+      <a class="soc-btn wa" href="https://wa.me/18495660770" target="_blank">
+        <svg class="soc-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.5s-.1-.4-.1-.5c-.1-.1-.6-1.5-.9-2-.2-.5-.5-.4-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.7 1.1 2.9c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3zM12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.5 5.9L0 24l6.3-1.6C8.1 23.4 10 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0zm0 21.8c-1.8 0-3.6-.5-5.1-1.4l-.4-.2-3.7 1 1-3.6-.3-.4C2.5 15.7 2 13.9 2 12 2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- AD SLOT BOTTOM -->
+<div class="container" style="padding:1rem 2rem;z-index:1;position:relative;">
+  <div class="ad-slot">[ Google AdSense — Footer Banner ]</div>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <div class="footer-links">
+    <a href="privacy-policy.html" class="js-t" data-key="fp_privacy">Política de Privacidad</a>
+    <a href="#" class="js-t" data-key="fp_terms">Términos de Uso</a>
+    <a href="about.html" class="js-t" data-key="fp_about">Acerca de</a>
+    <a href="contact.html" class="js-t" data-key="fp_contact">Contacto</a>
+  </div>
+  <p class="js-t" data-key="footer_copy">© 2025 Johnny Fenelon. Todos los derechos reservados.</p>
+  <p style="margin-top:.4rem;font-size:.68rem;color:#333;" class="js-t" data-key="footer_note">Sitio original y educativo. Cumple con las políticas de Google AdSense.</p>
+</footer>
+
+<script src="scripts.js"></script>
+</body>
+</html>
